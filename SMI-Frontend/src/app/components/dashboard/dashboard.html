@@ -1,0 +1,64 @@
+<div id="app-screen" class="pantalla-activa" style="height: 100vh;">
+        
+    <aside class="sidebar">
+        <div class="user-profile">
+            <h2>{{ usuarioLogueado }}</h2>
+            <p>Plataforma SMI</p>
+        </div>
+        <nav class="menu">
+            <a routerLink="/dashboard/inicio" routerLinkActive="activo" class="menu-item"><i class="fa-solid fa-house"></i> Inicio</a>
+            <a routerLink="/dashboard/historial" routerLinkActive="activo" class="menu-item"><i class="fa-solid fa-file-invoice-dollar"></i> Historial Ingresos y Egresos</a>
+            <a routerLink="/dashboard/inventario" routerLinkActive="activo" class="menu-item"><i class="fa-solid fa-boxes-stacked"></i> Inventario Actual</a>
+            <a routerLink="/dashboard/insertar" routerLinkActive="activo" class="menu-item"><i class="fa-solid fa-cart-arrow-down"></i> Insertar Pedido de Compra</a>
+            <a routerLink="/dashboard/reserva" routerLinkActive="activo" class="menu-item"><i class="fa-solid fa-share-from-square"></i> Insertar Orden de Reserva</a>
+            <a routerLink="/dashboard/estadisticas" routerLinkActive="activo" class="menu-item"><i class="fa-solid fa-chart-simple"></i> Estadísticas</a>
+            
+            <a routerLink="/dashboard/proyecto-smi" routerLinkActive="activo" class="menu-item"><i class="fa-solid fa-bolt"></i> Proyecto SMI</a>
+            
+            <a href="#" id="abrir-modal-pass" (click)="abrirModalPass($event)" class="menu-item" style="margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+                <i class="fa-solid fa-key"></i> Cambiar Contraseña
+            </a>
+        </nav>
+        <button (click)="cerrarSesion()" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</button>
+    </aside>
+
+    <main class="main-content">
+        <div class="top-bar">
+            <div class="search-box">
+                 <i class="fa-solid fa-magnifying-glass"></i>
+                 <input type="text" id="globalSearchInput" placeholder="Buscar material, SAP, proveedor...">
+             </div>
+        </div>
+
+        <div class="content-area">
+            <router-outlet></router-outlet>
+        </div>
+    </main>
+
+    <div *ngIf="mostrarModalPass" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000;">
+        <div style="background: white; padding: 30px; border-radius: 12px; width: 100%; max-width: 400px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+            <h3 style="margin-bottom: 20px; color: #1a1a1a;"><i class="fa-solid fa-key"></i> Cambiar Contraseña</h3>
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; font-size: 13px; margin-bottom: 5px; font-weight: 600;">Contraseña Actual</label>
+                <input type="password" [(ngModel)]="passActual" placeholder="••••••••" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;" [disabled]="cargandoPass">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-size: 13px; margin-bottom: 5px; font-weight: 600;">Nueva Contraseña</label>
+                <input type="password" [(ngModel)]="passNuevo" placeholder="••••••••" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;" [disabled]="cargandoPass">
+            </div>
+
+            <div *ngIf="msgPass" [style.color]="msgColor" style="font-size: 13px; margin-bottom: 15px; font-weight: 500;">
+                {{ msgPass }}
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button (click)="cerrarModalPass()" [disabled]="cargandoPass" style="padding: 8px 15px; background: #e0e0e0; border: none; border-radius: 6px; cursor: pointer;">Cancelar</button>
+                <button (click)="guardarPassword()" [disabled]="cargandoPass" style="padding: 8px 15px; background: #1e293b; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                    {{ cargandoPass ? 'Actualizando...' : 'Guardar Cambios' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

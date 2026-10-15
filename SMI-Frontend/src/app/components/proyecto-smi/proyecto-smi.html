@@ -1,0 +1,126 @@
+<div class="view-section vista-activa">
+    
+    <div class="ocultar-en-impresion" style="background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; margin-bottom: 30px;">
+        
+        <div style="padding: 15px 25px; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; gap: 10px;">
+            <h3 style="margin: 0; text-transform: uppercase; font-size: 16px; color: #333;">Asignación de Presupuesto</h3>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; padding: 25px; gap: 40px;">
+            <div style="background: #f5f5f5; border-radius: 8px; height: 300px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                <img src="imagenes/smi.jpeg" alt="Medidor SMI" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'">
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 600; font-size: 14px; color: #555;">Presupuesto Total:</span>
+                    <input type="number" [(ngModel)]="presupuestoTotal" placeholder="Ingrese monto..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-weight: bold;">
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #555; width: 120px;">Asignación para RM:</span>
+                    <input type="number" [(ngModel)]="asignacionRM" placeholder="Ingrese monto RM..." style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #555; width: 120px;">Asignación para IC:</span>
+                    <span style="flex: 1; font-weight: bold;">$ {{ asignacionIC | number:'1.2-2' }}</span>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #555; width: 120px;">Meses del Proyecto:</span>
+                    <input type="number" [(ngModel)]="mesesProyecto" placeholder="Ingrese meses..." style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+
+                <div style="margin-top: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #555;">Distribución RM (Materiales vs Mano de Obra)</span>
+                    <input type="range" min="0" max="100" [(ngModel)]="distribucionRMMateriales" style="width: 100%; margin: 10px 0; accent-color: #ffc107; cursor: pointer;">
+                    <div style="text-align: center; font-size: 12px; color: #666666;">
+                        {{ distribucionRMMateriales }}% en Materiales | {{ 100 - distribucionRMMateriales }}% en Mano de Obra
+                    </div>
+                    <div *ngIf="mesesProyecto != null && mesesProyecto > 0" style="background: #fdfdfd; border: 1px dashed #ccc; border-radius: 6px; padding: 10px; margin-top: 10px; font-size: 12px;">
+                        <strong style="color: #333;">Desglose Mensual RM: $ {{ mensualRM | number:'1.2-2' }}</strong><br>
+                        <span style="color: #d97706;">Materiales: $ {{ mensualRMMateriales | number:'1.2-2' }}</span> | 
+                        <span style="color: #2563eb;">M. Obra: $ {{ mensualRMManoObra | number:'1.2-2' }}</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 5px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #555;">Distribución IC (Materiales vs Mano de Obra)</span>
+                    <input type="range" min="0" max="100" [(ngModel)]="distribucionICMateriales" style="width: 100%; margin: 10px 0; accent-color: #ffc107; cursor: pointer;">
+                    <div style="text-align: center; font-size: 12px; color: #666;">
+                        {{ distribucionICMateriales }}% en Materiales | {{ 100 - distribucionICMateriales }}% en Mano de Obra
+                    </div>
+
+                    <div *ngIf="mesesProyecto != null && mesesProyecto > 0" style="background: #fdfdfd; border: 1px dashed #ccc; border-radius: 6px; padding: 10px; margin-top: 10px; font-size: 12px;">
+                        <strong style="color: #333;">Desglose Mensual IC: $ {{ mensualIC | number:'1.2-2' }}</strong><br>
+                        <span style="color: #d97706;">Materiales: $ {{ mensualICMateriales | number:'1.2-2' }}</span> | 
+                        <span style="color: #2563eb;">M. Obra: $ {{ mensualICManoObra | number:'1.2-2' }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e0e0e0;">
+        <div style="padding: 15px 25px; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <h3 style="margin: 0; text-transform: uppercase; font-size: 16px; color: #333;">Cotización Proyecto SMI</h3>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 13px; font-weight: 600;">Tipo de Cambio:</span>
+                <input type="number" [(ngModel)]="tipoCambio" placeholder="Ingresa TC..." style="padding: 6px; border: 1px solid #ccc; border-radius: 4px; width: 120px;">
+            </div>
+        </div>
+
+        <div style="padding: 20px 25px; display: flex; align-items: center; gap: 20px; background: #fdfdfd; border-bottom: 1px solid #eee;">
+            
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 13px; font-weight: 600; color: #555;">Total Medidores:</span>
+                <input type="number" [(ngModel)]="cantTotalMedidores" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 80px;">
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 13px;">Monofásicos:</span>
+                <input type="number" [(ngModel)]="cantMonofasicos" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 80px;">
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 13px;">Trifásicos:</span>
+                <span style="padding: 8px; font-weight: bold; width: 80px; text-align: center; background: #e9ecef; border-radius: 4px; display: inline-block;">{{ cantTrifasicos }}</span>
+            </div>
+        </div>
+
+        <div style="padding: 20px; overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                <tbody>
+                    <tr *ngFor="let item of materialesFiltrados" style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="padding: 8px; width: 60%; color: #444; font-weight: 500;">
+                            <span style="color: #ffc107; font-weight: bold; margin-right: 5px;">|</span> {{ item.nombre }}
+                        </td>
+                        <td style="padding: 8px; text-align: center; font-weight: bold; font-size: 12px; color: #1a1a1a;">
+                            {{ calcularCantidad(item) }}
+                        </td>
+                        <td style="padding: 8px; text-align: center; color: #666;">
+                            {{ item.unidad }}
+                        </td>
+                        <td style="padding: 8px; text-align: right; color: #666;">
+                            S/ {{ obtenerSubtotal(item) | number:'1.2-2' }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="background: #273481; color: white; padding: 15px 25px; border-bottom-left-radius: 0; border-bottom-right-radius: 0; display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="margin: 0; font-size: 16px;">TOTAL DE LA COTIZACIÓN: S/ {{ totalCotizacion | number:'1.2-2' }}</h3>
+            <h3 style="margin: 0; font-size: 16px;">$ {{ (tipoCambio ? totalCotizacion / tipoCambio : 0) | number:'1.2-2' }}</h3>
+        </div>
+
+        <div class="ocultar-en-impresion" style="padding: 20px 25px; display: flex; justify-content: flex-end; background: white; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; border-top: 1px solid #e0e0e0;">
+            <button (click)="descargarPDF()" style="background: #ffc107; color: #1a1a1a; border: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: background 0.2s;">
+                <i class="fa-solid fa-file-pdf"></i> Descargar Presupuesto Cotizado
+            </button>
+        </div>
+    </div>
+</div>

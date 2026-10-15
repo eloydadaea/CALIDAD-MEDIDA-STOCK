@@ -1,0 +1,87 @@
+<div class="view-section vista-activa">
+    <h3 class="section-title">HISTORIAL DE INGRESOS Y EGRESOS</h3>
+
+    <div class="table-controls">
+        <div class="search-box table-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input type="text" placeholder="Buscar por material, SAP, proveedor u orden..." (input)="buscar($event)">
+        </div>
+    </div>
+
+    <div class="table-container" style="overflow-x: auto;">
+        <table id="tablaResultados">
+            <thead>
+                <tr>
+                    <th>N° Orden</th>
+                    <th>Proveedor</th>
+                    <th>Fecha</th>
+                    <th>Moneda</th>
+                    <th>SAP</th>
+                    <th>Material</th>
+                    <th>Cantidad</th>
+                    <th>Unidad</th>
+                    <th>P. Unitario</th>
+                    <th>P. Total</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr *ngIf="filteredData.length === 0">
+                    <td colspan="10" style="text-align:center;">No hay datos o no coinciden con la búsqueda.</td>
+                </tr>
+
+                <tr *ngFor="let item of datosPaginados" 
+                    [style.background-color]="esEgreso(item) ? '#ffebee' : '#e8f5e9'" 
+                    style="border-bottom: 1px solid white;">
+                    
+                    <td>{{ item.orden || '-' }}</td>
+                    <td>{{ item.proveedor || '-' }}</td>
+                    <td>{{ item.fecha || '-' }}</td>
+                    <td>{{ item.moneda || '-' }}</td>
+                    <td>{{ item.codigo_sap || '-' }}</td>
+                    <td>{{ item.nombre_material || '-' }}</td>
+                    
+
+                    <td style="font-weight: bold;" [style.color]="esEgreso(item) ? '#c62828' : '#2e7d32'">
+                        {{ item.cantidad || '-' }}
+                    </td>
+                    
+                    <td>{{ item.unidad || '-' }}</td>
+                    <td>{{ item.precio_unitario || '-' }}</td>
+                    <td>{{ item.cantidad_total || '-' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div *ngIf="filteredData.length > 0" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 10px 20px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        
+        <span style="color: #666; font-size: 14px;">
+            Mostrando {{ datosPaginados.length }} de {{ filteredData.length }} registros totales
+        </span>
+        
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <button (click)="cambiarPagina(paginaActual - 1)" 
+                    [disabled]="paginaActual === 1"
+                    [style.opacity]="paginaActual === 1 ? '0.5' : '1'"
+                    [style.cursor]="paginaActual === 1 ? 'not-allowed' : 'pointer'"
+                    style="padding: 8px 16px; border: 1px solid #ccc; background: white; border-radius: 6px; font-weight: 600; color: #333; transition: background 0.2s;">
+                &laquo; Anterior
+            </button>
+            
+            <span style="font-weight: bold; color: #273481; font-size: 14px; padding: 0 10px;">
+                Página {{ paginaActual }} de {{ totalPaginas }}
+            </span>
+            
+            <button (click)="cambiarPagina(paginaActual + 1)" 
+                    [disabled]="paginaActual === totalPaginas"
+                    [style.opacity]="paginaActual === totalPaginas ? '0.5' : '1'"
+                    [style.cursor]="paginaActual === totalPaginas ? 'not-allowed' : 'pointer'"
+                    style="padding: 8px 16px; border: none; background: #273481; color: white; border-radius: 6px; font-weight: 600; transition: background 0.2s;">
+                Siguiente &raquo;
+            </button>
+        </div>
+    </div>
+</div>

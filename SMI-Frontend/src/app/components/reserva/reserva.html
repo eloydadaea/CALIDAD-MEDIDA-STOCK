@@ -1,0 +1,86 @@
+<div class="view-section vista-activa">
+    <h3 class="section-title" style="text-transform: uppercase; margin-bottom: 25px; font-size: 15px; font-weight: 700;">Insertar Orden de Reserva (Salida de Stock)</h3>
+    
+    <div class="action-cards" style="display: flex; gap: 30px; margin-bottom: 50px; width: 100%;">
+        
+        <!-- Tarjeta PDF Reserva -->
+        <div (click)="abrirModalPdf()" style="background: #273481; color: white; border-radius: 12px; padding: 40px; flex: 1; cursor: pointer; min-height: 220px; box-sizing: border-box; transition: transform 0.2s; display: flex; flex-direction: column; justify-content: center;">
+            <div style="background: white; width: 55px; height: 65px; border-radius: 6px; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #273481; font-size: 20px;">PDF</div>
+            <p style="font-size: 16px; margin: 0; line-height: 1.5;">Extraer Orden de Reserva desde un archivo PDF &rarr;</p>
+        </div>
+        
+        <!-- Tarjeta Manual Reserva -->
+        <div (click)="abrirModalManual()" style="background: #273481; color: white; border-radius: 12px; padding: 40px; flex: 1; cursor: pointer; min-height: 220px; box-sizing: border-box; transition: transform 0.2s; display: flex; flex-direction: column; justify-content: center;">
+            <div style="background: white; width: 55px; height: 65px; border-radius: 6px; margin-bottom: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; box-sizing: border-box;">
+                <div style="width: 100%; height: 6px; background: #273481; border-radius: 3px;"></div>
+                <div style="width: 100%; height: 6px; background: #273481; border-radius: 3px;"></div>
+                <div style="width: 60%; height: 6px; background: #273481; border-radius: 3px; align-self: flex-start;"></div>
+            </div>
+            <p style="font-size: 16px; margin: 0; line-height: 1.5;">Ingresar retiro de stock por manual &rarr;</p>
+        </div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 30px; width: 100%; box-sizing: border-box; padding: 0 20px; margin-top: auto;">
+        <img src="imagenes/foco_saluda_2.png" alt="Mascota Luz" style="width: 130px;">
+        <div style="background: #e9e9e9; padding: 30px 40px; border-radius: 12px; position: relative; flex: 1; font-size: 16px; color: #1a1a1a; line-height: 1.6; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            Hola, en esta sección puedes ingresar las órdenes de reserva para registrar las salidas de nuestros materiales.
+            <div style="position: absolute; left: -14px; top: 50%; transform: translateY(-50%); width: 0; height: 0; border-top: 14px solid transparent; border-bottom: 14px solid transparent; border-right: 14px solid #e9e9e9;"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<div *ngIf="mostrarModalPdf" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000;">
+    <div style="background: white; padding: 30px; border-radius: 12px; width: 100%; max-width: 500px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); text-align: center;">
+        <h3 style="margin-bottom: 20px; color: #1a1a1a;">Sube las Órdenes de Reserva (PDF):</h3>
+        
+        <div style="border: 2px dashed #c62828; background: #fdf5f5; padding: 40px; border-radius: 8px; margin-bottom: 20px; cursor: pointer;">
+            <span style="font-size: 40px; color: #c62828;">+</span>
+            <p style="margin: 10px 0 0 0; color: #666;">Haz clic para seleccionar un PDF</p>
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button (click)="cerrarModalPdf()" [disabled]="cargando" style="padding: 10px 20px; background: #e0e0e0; border: none; border-radius: 6px; cursor: pointer; color: #333; font-weight: 600;">Cancelar</button>
+            <button (click)="cargarPdf()" [disabled]="cargando" style="padding: 10px 20px; background: #c62828; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                {{ cargando ? 'Procesando...' : 'Extraer Retiros' }}
+            </button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="mostrarModalManual" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000;">
+    <div style="background: white; padding: 30px; border-radius: 12px; width: 100%; max-width: 600px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+        <h3 style="margin-bottom: 20px; color: #1a1a1a;">Registro Manual de Salida (Reserva)</h3>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; text-align: left;">
+            <div>
+                <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 5px;">N° de Reserva</label>
+                <input type="text" [(ngModel)]="mOrden" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            </div>
+            <div>
+                <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 5px;">Fecha de Retiro</label>
+                <input type="date" [(ngModel)]="mFecha" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            </div>
+            <div>
+                <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 5px;">Código SAP</label>
+                <input type="text" [(ngModel)]="mSap" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            </div>
+            <div>
+                <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 5px;">Cantidad a Retirar</label>
+                <input type="number" [(ngModel)]="mCantidad" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            </div>
+            <div style="grid-column: span 2;">
+                <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 5px;">Material</label>
+                <input type="text" [(ngModel)]="mMaterial" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button (click)="cerrarModalManual()" [disabled]="cargando" style="padding: 10px 20px; background: #e0e0e0; border: none; border-radius: 6px; cursor: pointer; color: #333; font-weight: 600;">Cancelar</button>
+            <button (click)="guardarManual()" [disabled]="cargando" style="padding: 10px 20px; background: #c62828; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                {{ cargando ? 'Guardando...' : 'Registrar Salida' }}
+            </button>
+        </div>
+    </div>
+</div>

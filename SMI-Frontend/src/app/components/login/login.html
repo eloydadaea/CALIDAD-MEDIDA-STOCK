@@ -1,0 +1,41 @@
+<div id="login-screen" class="pantalla-activa" style="height: 100vh;">
+    <div class="login-left">
+        <div class="login-brand">
+                <img src="imagenes/Simplification.png" alt="Logo Luz del Sur" style="max-width: 550px">
+                <h2>Hola<br>Dame Luz 👋!</h2>
+                <p>Plataforma de manejo de Stock de materiales del Área de Calidad de Medida y Fiscalización.</p>
+        </div>
+    </div>
+    <div class="login-right">
+        <div class="login-form-container">
+            <h3>¡Bienvenido de vuelta!</h3>
+            <p class="subtitle">Ingresa tus credenciales proporcionadas por el especialista encargado de la plataforma.</p>
+            
+            <div class="input-group">
+                <label>Usuario:</label>
+                <input type="text" #userInput placeholder="Ej. AmandaCandela" [disabled]="cargando">
+            </div>
+            
+            <div class="input-group">
+                <label>Contraseña:</label>
+                <div class="password-wrapper">
+                    <input [type]="ocultarPassword ? 'password' : 'text'" #passInput [disabled]="cargando">
+                    <i class="fa-solid" 
+                       [class.fa-eye-slash]="ocultarPassword" 
+                       [class.fa-eye]="!ocultarPassword" 
+                       (click)="togglePassword()"
+                       style="cursor: pointer;"></i>
+                </div>
+            </div>
+            
+            <div *ngIf="mostrarError" style="color: #d32f2f; font-size: 14px; margin-top: -10px; margin-bottom: 15px; text-align: center; font-weight: 500;">
+                {{ mensajeError }}
+            </div>
+
+           <button id="btn-ingresar" (click)="iniciarSesion(userInput.value, passInput.value)" [disabled]="cargando">
+                <span *ngIf="!cargando">Ingresar</span>
+                <span *ngIf="cargando"><i class="fa-solid fa-spinner fa-spin"></i> Verificando...</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<p>inventario works!</p>
+<div class="view-section vista-activa" style="width: 100%; height: 100%;">
+    <div style="display: flex; flex-direction: column; width: 100%; height: 100%;">
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <h3 class="section-title" style="margin: 0; font-size: 15px; font-weight: 700; text-transform: uppercase;">Inventario Consolidado</h3>
+            
+            <div class="search-box table-search" style="margin: 0; width: 300px;">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Buscar material o SAP..." (input)="buscar($event)">
+            </div>
+        </div>
+        
+        <div id="grid-inventario" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; padding-bottom: 30px; overflow-y: auto;">
+            
+            <p *ngIf="inventarioFiltrado.length === 0" style="color:#666; grid-column: 1 / -1;">No se encontraron productos con esa búsqueda.</p>
+
+            <div class="inventory-card" *ngFor="let prod of inventarioFiltrado">
+                <div class="sap">SAP: {{ prod.sap }}</div>
+                <h4>{{ prod.nombre }}</h4>
+                <div class="stock-bottom">
+                    <div class="stock-label">Stock Disponible</div>
+                    <div class="stock-amount" [style.color]="prod.cantidad < 0 ? '#c62828' : '#2b3481'">
+                        {{ prod.cantidad | number:'1.2-2' }} <span class="stock-unit">{{ prod.unidad }}</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
